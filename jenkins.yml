@@ -1,0 +1,65 @@
+---
+- hosts: jenkins
+  become: yes
+  remote_user: ec2-user
+  tasks:
+  - name: install updates
+    yum: 
+      name: "*"
+      state: latest         
+  - name: install java
+    yum:
+      name: java-1.8.0-openjdk
+      state: installed
+  - name: install wget and git
+    yum: 
+      name: 
+      - git
+      - wget
+  - name: download jenkins repo
+    get_url:
+      url: http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo
+      dest: /etc/yum.repos.d/jenkins.repo
+  - name: import jenkins key
+    rpm_key:
+      key: https://jenkins-ci.org/redhat/jenkins-ci.org.key
+      state: present
+  - name: install jenkins
+    yum:
+      name: jenkins
+      state: present
+  - name: make sure jenkins is started & enabled
+    service:
+      name: jenkins
+      state: started
+      enabled: yes 
+  - name: install epel
+    yum:
+      name: epel-release
+      state: latest
+  - name: install nginx
+    yum:
+      name: nginx
+      state: latest
+  - name: replacing nginx.conf file
+    template:
+      src: nginx.j2
+      dest: /etc/nginx/nginx.conf
+  - name: restart nginx
+    service:
+      name: nginx
+      state: restarted
+      enabled: yes
+  - name: Put SELinux in permissive mode
+    selinux:
+      policy: targeted
+      state: permissive
+  - name: sleep for 30 seconds and continue with play
+    wait_for: timeout=30
+  - name: init password jenkin
+    shell: cat /var/lib/jenkins/secrets/initialAdminPassword
+    changed_when: false
+    register: result
+  - name: print init password jenkins
+    debug:
+      var: result.stdout  
