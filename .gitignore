@@ -3,4 +3,5 @@ jenkins_config.yml
 terraform.tfstate
 terraform.tfstate.backup
 terraform.tfvars
+jenkins_user.yml
 .*
