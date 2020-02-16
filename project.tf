@@ -88,6 +88,26 @@ resource "aws_instance" "dev" {
   key_name               = aws_key_pair.auth.id
 }
 
+resource "aws_eip" "jump_ip" {
+  instance = aws_instance.jump.id
+  vpc      = true
+}
+
+resource "aws_eip" "jenkins_ip" {
+  instance = aws_instance.jenkins.id
+  vpc      = true
+}
+
+resource "aws_eip" "prod_ip" {
+  instance = aws_instance.prod.id
+  vpc      = true
+}
+
+resource "aws_eip" "dev_ip" {
+  instance = aws_instance.dev.id
+  vpc      = true
+}
+
 resource "aws_security_group" "customer" {
   name        = "Customer"
   description = "Allows customers access to the resources created in the cloud."
@@ -162,6 +182,16 @@ resource "aws_security_group" "employee" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+}
+
+resource "aws_security_group_rule" "allow_jump" {
+  type            = "ingress"
+  from_port       = 22
+  to_port         = 22
+  protocol        = "tcp"
+  cidr_blocks = ["${aws_instance.jenkins.public_ip}/32"]
+
+  security_group_id = aws_security_group.employee.id
 }
 
 resource "local_file" "ansible_resource" {
