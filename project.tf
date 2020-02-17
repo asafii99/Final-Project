@@ -15,8 +15,9 @@ resource "aws_key_pair" "auth" {
 }
 
 resource "aws_instance" "jenkins" {
-  ami           = var.centos_ami
-  instance_type = "t2.small"
+  ami                     = var.centos_ami
+  instance_type           = "t2.small"
+  disable_api_termination = true
 
   tags = {
     Name = "Jenkins"
@@ -161,6 +162,10 @@ resource "aws_security_group" "employee" {
     security_groups = [aws_security_group.jump.id]
   }
 
+  lifecycle {
+    ignore_changes = [ingress]
+  }
+
   ingress {
     from_port   = 80
     to_port     = 80
@@ -185,10 +190,10 @@ resource "aws_security_group" "employee" {
 }
 
 resource "aws_security_group_rule" "allow_jump" {
-  type            = "ingress"
-  from_port       = 22
-  to_port         = 22
-  protocol        = "tcp"
+  type        = "ingress"
+  from_port   = 22
+  to_port     = 22
+  protocol    = "tcp"
   cidr_blocks = ["${aws_instance.jenkins.public_ip}/32"]
 
   security_group_id = aws_security_group.employee.id
