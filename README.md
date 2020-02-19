@@ -7,4 +7,5 @@ Instructions for how to deploy this DevOps Project:
 3. Install both Ansible and Terraform onto your linux system. 
 4. Create a terraform.tfvars file and define your variables which are contained in variables.tf. 
 5. If needed, make any other modifications/changes depending on your environment. 
+7. Run the "terraform init" command. 
 6. Lastly, run the "terraform apply" command.
