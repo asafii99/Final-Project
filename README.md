@@ -4,7 +4,7 @@ Instructions for how to deploy this DevOps Project:
 
 1. Create an SSH key and an AWS account.
 2. Copy and paste your account details into ~/.aws/credentials if you're using an AWS Educate account or create an API key within AWS to use with Terraform if you're using a normal AWS account.
-3. Install both Ansible and Terraform onto your linux system. 
+3. Install both Ansible and Terraform onto your Linux system. 
 4. Create a terraform.tfvars file and define your variables which are contained in variables.tf. 
 5. If needed, make any other modifications/changes depending on your environment. 
 6. Run the "terraform init" command. 
