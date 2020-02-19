@@ -105,9 +105,14 @@ resource "aws_eip" "prod_ip" {
 }
 
 resource "aws_eip" "dev_ip" {
-  instance = aws_instance.dev.id
-  vpc      = true
+  vpc = true
 }
+
+resource "aws_eip_association" "eip_assoc" {
+  instance_id   = aws_instance.dev.id
+  allocation_id = aws_eip.dev_ip.id
+}
+
 
 resource "aws_security_group" "customer" {
   name        = "Customer"
@@ -235,11 +240,20 @@ EOF
 
 }
 
-resource "null_resource" "deploy_ansible" {
+resource "null_resource" "deploy_httpd" {
 
   depends_on = [aws_instance.jump, aws_instance.jenkins, aws_instance.dev, aws_instance.prod]
 
   provisioner "local-exec" {
-    command = "aws ec2 wait instance-status-ok --instance-ids ${aws_instance.dev.id} --profile default && ansible-playbook -i aws_hosts apache.yml && ansible-playbook -i aws_hosts jenkins.yml"
+    command = "aws ec2 wait instance-status-ok --instance-ids ${aws_instance.dev.id} --profile default && ansible-playbook -i aws_hosts apache.yml"
+  }
+}
+
+resource "null_resource" "deploy_jenkins" {
+
+  depends_on = [aws_instance.jump, aws_instance.jenkins, aws_instance.dev, aws_instance.prod]
+
+  provisioner "local-exec" {
+    command = "aws ec2 wait instance-status-ok --instance-ids ${aws_instance.jenkins.id} --profile default && ansible-playbook -i aws_hosts jenkins.yml"
   }
 }
