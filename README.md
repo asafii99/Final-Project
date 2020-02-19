@@ -9,3 +9,16 @@ Instructions for how to deploy this DevOps Project:
 5. If needed, make any other modifications/changes depending on your environment. 
 6. Run the "terraform init" command. 
 7. Lastly, run the "terraform apply" command.
+
+Instructions for how Jenkins deploys code automatically via the dev branch and head commits:
+
+1. On Jenkins, go to Manage Plugins and add the two plugins, "SSH plugin" and "Publish Over SSH". 
+2. Go to Configure System and under SSH remote hosts, add in your SSH sites that your project will connect to. 
+3. Under Publish Over SSH, add in your SSH Server/s.
+4. Add a new item and select "Freestyle project".  
+5. Under Source Code Management, add the Git respository and specify your branch. 
+6. Under Build Triggers, select GitHub hook trigger for GITScm polling.
+7. Under Build, add a build step and select Execute shell script on remote host using ssh, then select your SSH site and enter "sudo chmod 777 /var/www/html" as your command. 
+8. Under Post-build artifacts, add a post-build action and select Send build artifacts over SSH, then select your SSH server. 
+9. Save your job and go over to your GitHub repository and in settings add a webhook.
+10. Make changes to the code and commit the changes to automatically notify Jenkins. 
