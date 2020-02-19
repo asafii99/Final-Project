@@ -21,4 +21,4 @@ Instructions for how Jenkins deploys code automatically via the dev branch and h
 7. Under Build, add a build step and select Execute shell script on remote host using ssh, then select your SSH site and enter "sudo chmod 777 /var/www/html" as your command.
 8. Under Post-build artifacts, add a post-build action and select Send build artifacts over SSH, then select your SSH server.
 9. Save your job and go over to your GitHub repository and in settings add a webhook.
-10. Make changes to the code and commit the changes to automatically notify Jenkins to automatically run a build. 
+10. Make changes to the code and commit the changes to notify Jenkins to automatically run a build. 
