@@ -1,6 +1,6 @@
 The purpose of this DevOps project is to automate the provisioning, configuring, and deploying of an HTML web application using Terraform, Ansible, and Jenkins.
 
-Instructions for how to deploy your demo this DevOps Project:
+Instructions for how to deploy this DevOps Project:
 
 1. Create an SSH key and an AWS account.
 2. Copy and paste your account details into ~/.aws/credentials if your using an AWS Educate account or create an API key within AWS to use with Terraform if you're using a normal AWS account.
