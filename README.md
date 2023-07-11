@@ -1,4 +1,4 @@
-![DevOps.Tools_Logo](https://avatars.githubusercontent.com/u/58230087?v=4)
+<img src="https://avatars.githubusercontent.com/u/58230087?v=4" width="260" height="260">
 
 # Doggy Website
 The purpose of this DevOps project is to automate the provisioning, configuring, and deploying of an HTML web application using Terraform, Ansible, and Jenkins.
